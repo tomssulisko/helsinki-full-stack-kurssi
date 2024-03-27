@@ -12,7 +12,7 @@ const Button = (props) => (
   </button>
 )
 
-  const Display = props => <div>{props.text}{props.value}</div>
+  const Display = props => <div>{props.text}{props.value}{props.symbol}</div>
 
 const App = () => {
   // tallenna napit omaan tilaansa
@@ -24,17 +24,23 @@ const App = () => {
 
   return (
     <div>
-      
+    <h1>Feedback</h1>
+    <div>
+        
       <Button handleClick={() => setGood(good + 1)} text="GOOD" /> 
       &nbsp;
       <Button handleClick={() => setNeutral(neutral + 1)} text="NEUTRAL" /> 
       &nbsp;
       <Button handleClick={() => setBad(bad + 1)} text="BAD" /> 
-      
-      <Display value={good} text="Good:" />
-      <Display value={neutral} text="Neutral:" />
-      <Display value={bad} text="Bad:" />
-    </div>
+
+      <h1>Statistics</h1>
+      <Display value={good} text="Good: " />
+      <Display value={neutral} text="Neutral: " />
+      <Display value={bad} text="Bad: " />
+      <Display value={good+neutral+bad} text="All: " />
+      <Display value={(good+bad*-1)/(good+neutral+bad)} text="Average: " />
+      <Display value={good/(good+neutral+bad)*100} text="Positive: " symbol="%" /> 
+    </div></div>
   )
 }
 
