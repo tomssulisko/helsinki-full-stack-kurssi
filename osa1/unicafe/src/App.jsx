@@ -14,7 +14,10 @@ const Button = (props) => (
 
   const Display = props => <div>{props.text}{props.value}{props.symbol}</div>
 
-  const Statistics = ({ good, neutral, bad }) => {  
+  const Statistics = ({ good, neutral, bad }) => {
+    let total= good+neutral+bad
+    
+    if (total){
     return (
       <div>
         <h1>Statistics</h1>
@@ -26,7 +29,15 @@ const Button = (props) => (
         <Display value={good/(good+neutral+bad)*100} text="Positive: " symbol="%" /> 
       </div>
     )
-  }
+    
+  } else 
+  return (
+    <div>
+      <h1>Statistics</h1>
+      No feedback given
+    </div>
+  )
+}
 
 const App = () => {
   // tallenna napit omaan tilaansa
