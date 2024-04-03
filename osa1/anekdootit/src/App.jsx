@@ -11,6 +11,29 @@ const Button = (props) => (
   </button>
 )
 
+const Statistics = ({ anecdotes, points, best }) => {
+
+    
+    if (best || best === 0) {
+    return (
+      <div>
+        <h1>Anecdote with most votes</h1>
+      {anecdotes[best]}
+      <br></br>
+      has {points[best]} votes
+        
+      </div>
+    )
+    
+  } else 
+  return (
+    <div>
+      <h1>Anecdote with most votes</h1>
+      No feedback given
+    </div>
+  )
+}
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -26,16 +49,30 @@ const App = () => {
    
   const [selected, setSelected] = useState(0)
   const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
+  const [best, setBest]= useState(null)
 
   const addVote = anecdote => {
     const copy = [...points]
     copy[anecdote] += 1
+    determineBest(copy)
     setPoints(copy)
   }
 
+  const determineBest = scores => {
+    let bestScore
+    let bestAnecdote
+    scores.forEach(function callback(value, index) {
+      if (!bestScore || value > bestScore ) {
+        bestScore = value
+        bestAnecdote = index
+      }
+    });
+    return setBest(bestAnecdote)
+  }
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       {anecdotes[selected]}
       <br></br>
       has {points[selected]} votes
@@ -43,6 +80,8 @@ const App = () => {
       <Button handleClick={() => addVote(selected)} text="vote" /> 
       <br></br>
       <Button handleClick={() => setSelected(getRandomInt(anecdotes.length))} text="next anecdote" /> 
+      
+      <Statistics best={best} anecdotes={anecdotes} points={points} />
     </div>
   )
 }
