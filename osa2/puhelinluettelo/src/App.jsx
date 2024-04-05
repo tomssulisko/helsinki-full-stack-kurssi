@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import Person from './components/Person'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import PersonsList from './components/PersonsList'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -56,8 +58,9 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
-  const handleFilterChange = (event) => {
-    setFilterPhrase(event.target.value)
+  const handleFilterChange = (phrase) => {
+    console.log("Changing filterphrase to: ",phrase)
+    setFilterPhrase(phrase)
   }
 
   const personsToShow = !filterPhrase
@@ -68,36 +71,17 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <div>
-          Search: <input 
-            value={filterPhrase} 
-            onChange={handleFilterChange}
-         />
-        </div>
-        <h2>Add a new number</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input 
-            value={newName} 
-            onChange={handlePersonChange}
-         />
-        </div>
-        <div>
-          number: <input 
-            value={newNumber} 
-            onChange={handleNumberChange}
-         />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form >
+
+      <Filter phrase={filterPhrase} handleChange={handleFilterChange} />
+
+      <h2>Add a new number</h2>
+
+      <PersonForm addPerson={addPerson} newName ={newName} handlePersonChange={handlePersonChange} newNumber={newNumber} handleNumberChange={handleNumberChange}/>
+
       <h2>Numbers</h2>
-      <ul>
-        {personsToShow.map(person => 
-          <Person key={person.id} person={person} />
-        )}
-      </ul>
+
+      <PersonsList personsToShow={personsToShow} />
+
     </div>
   )
 
