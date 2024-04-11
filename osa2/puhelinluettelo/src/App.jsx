@@ -3,6 +3,7 @@ import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import PersonsList from './components/PersonsList'
+import personService from './services/personservice';
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -12,14 +13,14 @@ const App = () => {
 
 
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
-      })
-  }, [])
+    personService.getAll()
+        .then(allPersons => {
+            setPersons(allPersons);
+        })
+        .catch(error => {
+            console.log("Error while fetching all persons:", error)
+        });
+}, []);
 
 
   const addPerson = (event) => {
@@ -30,6 +31,13 @@ const App = () => {
       id: persons.length + 1,
     }
 
+    personService
+    .create(personObject)
+    .then(response => {
+      console.log(response)
+    })
+
+
     let nameIsAlreadyAdded = persons.find((person) => person.name === newName)
 
     if(!nameIsAlreadyAdded) {
@@ -39,7 +47,7 @@ const App = () => {
     } else {
       alert(newName+" is already added to phonebook")
     }
-    
+  
     
   }
 
