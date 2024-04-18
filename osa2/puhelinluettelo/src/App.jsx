@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import PersonsList from './components/PersonsList'
@@ -27,8 +26,7 @@ const App = () => {
     event.preventDefault()
     const personObject = {
       name: newName,
-      number:newNumber,
-      id: persons.length + 1,
+      number:newNumber
     }
 
     personService
@@ -49,6 +47,30 @@ const App = () => {
     }
   
     
+  }
+
+  const removePerson = (event) => {
+    personService
+    .remove(event)
+    .then(response => {
+      console.log("REMOVED",response)
+    })
+
+    let clonedPersons = persons.slice(0)
+    const personToRemove = clonedPersons.find((person) => person.id === event)
+    const index = clonedPersons.indexOf(personToRemove)
+    if (index > -1) {
+      clonedPersons.splice(index,1)
+      setPersons(clonedPersons)
+    }
+    
+
+
+  }
+
+  const handlePersonRemove = (event) => {
+    console.log("Remove person",event)
+    removePerson(event)
   }
 
   const handlePersonChange = (event) => {
@@ -81,7 +103,7 @@ const App = () => {
 
       <h2>Numbers</h2>
 
-      <PersonsList personsToShow={personsToShow} />
+      <PersonsList personsToShow={personsToShow} handlePersonRemove={handlePersonRemove} buttonLabel="Remove" />
 
     </div>
   )

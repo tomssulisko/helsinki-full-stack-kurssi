@@ -1,11 +1,11 @@
 import Person from './Person'
 
-const PersonsList = (props) => {
+const PersonsList = ({personsToShow, buttonLabel, handlePersonRemove} ) => {
   
     return(
   <ul>
-          {props.personsToShow.map(person => 
-            <Person key={person.id} person={person} />
+          {personsToShow.map(person => 
+            <Person key={person.id} person={person} buttonLabel={buttonLabel} handlePersonRemove={() =>handlePersonRemove(person.id)}/>
           )}
         </ul>
   )}
