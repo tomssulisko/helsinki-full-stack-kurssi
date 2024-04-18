@@ -69,8 +69,11 @@ const App = () => {
   }
 
   const handlePersonRemove = (event) => {
-    console.log("Remove person",event)
+    const personToRemove = persons.find((person) => person.id === event)
+    if (window.confirm("Delete "+personToRemove.name+"?")) {
+      console.log("Remove person",event)
     removePerson(event)
+    }
   }
 
   const handlePersonChange = (event) => {
