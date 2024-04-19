@@ -1,7 +1,10 @@
 import Person from './Person'
 
 const PersonsList = ({personsToShow, buttonLabel, handlePersonRemove} ) => {
-  
+  if (!personsToShow){
+    return null
+  }
+
     return(
   <ul>
           {personsToShow.map(person => 

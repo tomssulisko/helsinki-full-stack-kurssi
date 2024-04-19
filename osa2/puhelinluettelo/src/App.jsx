@@ -3,12 +3,14 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import PersonsList from './components/PersonsList'
 import personService from './services/personservice';
+import Notification from './components/Notification'
 
 const App = () => {
-  const [persons, setPersons] = useState([]) 
+  const [persons, setPersons] = useState(null) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterPhrase, setFilterPhrase] = useState('')
+  const [notification, setNotification] = useState({message: null, type: null})
 
 
   useEffect(() => {
@@ -17,6 +19,7 @@ const App = () => {
             setPersons(allPersons);
         })
         .catch(error => {
+          showNotification("Error while fetching all persons: "+error, "error")
             console.log("Error while fetching all persons:", error)
         });
 }, []);
@@ -41,7 +44,11 @@ const App = () => {
             setPersons(persons.concat(addedPerson))
             setNewName('')
             setNewNumber('')
+
+            showNotification("Added: "+personObject.name, "success")
+            console.log("Added: "+personObject.name, "success")
           }).catch(error => {
+            showNotification("Error while adding person: "+error, "error")
             console.log("Error while adding person:", error)
         });
 
@@ -66,9 +73,11 @@ const App = () => {
       personService
     .update(changedPerson.id, changedPerson)
     .then(returnedPerson => {
-      console.log(returnedPerson)
       setPersons(persons.map(person => person.id !== personToChange.id ? person : returnedPerson))
+
+      showNotification("Modified: "+changedPerson.name, "success")
     }).catch(error => {
+      showNotification("Error while updating person: "+error, "error")
       console.log("Error while updating person:", error)
   });
 
@@ -89,13 +98,12 @@ const App = () => {
           clonedPersons.splice(index,1)
           setPersons(clonedPersons)
     }
+    showNotification("Removed: "+personToRemove.name, "success")
 
     }).catch(error => {
-      console.log("Error while removing person:", error)
+      showNotification("Error while removing person: "+error, "error")
+      console.log("Error while removing person: ", error)
   });
-
-    
-    
 
 
   }
@@ -124,9 +132,21 @@ const App = () => {
   : persons.filter(person => person.name.toLowerCase().includes(filterPhrase.toLowerCase()))
 
 
+  const showNotification = (message, type) => {
+    const showTime = 5000;
+    setNotification(
+      {message, type}
+    )
+    setTimeout(() => {
+      setNotification({message: null, type: null})
+    }, showTime)
+  }
+
   return (
     <div>
       <h1>Phonebook</h1>
+
+      <Notification message={notification.message} type={notification.type} />
 
       <Filter phrase={filterPhrase} handleChange={handleFilterChange} />
 
