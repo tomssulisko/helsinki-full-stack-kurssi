@@ -23,46 +23,78 @@ const App = () => {
 
 
   const addPerson = (event) => {
-    event.preventDefault()
-    const personObject = {
-      name: newName,
-      number:newNumber
-    }
 
-    personService
-    .create(personObject)
-    .then(response => {
-      console.log(response)
-    })
+    const person = persons.find((person) => person.name === newName)
 
+      if(!person) {
 
-    let nameIsAlreadyAdded = persons.find((person) => person.name === newName)
+          event.preventDefault()
+          const personObject = {
+            name: newName,
+            number:newNumber
+          }
 
-    if(!nameIsAlreadyAdded) {
-      setPersons(persons.concat(personObject))
-      setNewName('')
-      setNewNumber('')
-    } else {
-      alert(newName+" is already added to phonebook")
-    }
-  
+          personService
+          .create(personObject)
+          .then(addedPerson => {
+
+            setPersons(persons.concat(addedPerson))
+            setNewName('')
+            setNewNumber('')
+          }).catch(error => {
+            console.log("Error while adding person:", error)
+        });
+
+          
+            
+          } else {
+            if (window.confirm(newName+" is already added to phonebook, replace old number with inserted?")) {
+              replacePersonNumber(person, newNumber)
+            }
+          }
+        
     
   }
+
+  const replacePersonNumber = (personToChange, newNumber) => {
+
+    const changedPerson = {
+      ...personToChange,
+      number:newNumber,
+    }
+
+      personService
+    .update(changedPerson.id, changedPerson)
+    .then(returnedPerson => {
+      console.log(returnedPerson)
+      setPersons(persons.map(person => person.id !== personToChange.id ? person : returnedPerson))
+    }).catch(error => {
+      console.log("Error while updating person:", error)
+  });
+
+
+
+  }
+
 
   const removePerson = (event) => {
     personService
     .remove(event)
     .then(response => {
-      console.log("REMOVED",response)
-    })
 
     let clonedPersons = persons.slice(0)
-    const personToRemove = clonedPersons.find((person) => person.id === event)
-    const index = clonedPersons.indexOf(personToRemove)
-    if (index > -1) {
-      clonedPersons.splice(index,1)
-      setPersons(clonedPersons)
+        const personToRemove = clonedPersons.find((person) => person.id === response.id)
+        const index = clonedPersons.indexOf(personToRemove)
+        if (index > -1) {
+          clonedPersons.splice(index,1)
+          setPersons(clonedPersons)
     }
+
+    }).catch(error => {
+      console.log("Error while removing person:", error)
+  });
+
+    
     
 
 
@@ -71,7 +103,6 @@ const App = () => {
   const handlePersonRemove = (event) => {
     const personToRemove = persons.find((person) => person.id === event)
     if (window.confirm("Delete "+personToRemove.name+"?")) {
-      console.log("Remove person",event)
     removePerson(event)
     }
   }
@@ -85,7 +116,6 @@ const App = () => {
   }
 
   const handleFilterChange = (phrase) => {
-    console.log("Changing filterphrase to: ",phrase)
     setFilterPhrase(phrase)
   }
 
