@@ -1,6 +1,6 @@
 import Country from './Country'
 
-const CountriesList = ({countriesToShow, buttonLabel, handleInfo} ) => {
+const CountriesList = ({countriesToShow, buttonLabel, handleChosen={handleChosen}} ) => {
   if (!countriesToShow || countriesToShow.length === 0){
     return(
       <div>
@@ -18,7 +18,7 @@ const CountriesList = ({countriesToShow, buttonLabel, handleInfo} ) => {
   } else return (
       <ul>
       {countriesToShow.map(country => 
-              <Country key={country.cca2} country={country} buttonLabel={buttonLabel}/>
+              <Country key={country.cca2} country={country} buttonLabel={buttonLabel} handleChosen={handleChosen}/>
             )}
       </ul>
   )}

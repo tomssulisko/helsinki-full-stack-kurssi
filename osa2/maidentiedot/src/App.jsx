@@ -9,6 +9,7 @@ const App = () => {
   const [countries, setCountries] = useState([]) 
   const [filterPhrase, setFilterPhrase] = useState('')
   const [notification, setNotification] = useState({message: null, type: null})
+  const [chosenCountry, setChosenCountry] = useState(null) 
 
 
   useEffect(() => {
@@ -25,6 +26,11 @@ const App = () => {
 
   const handleFilterChange = (phrase) => {
     setFilterPhrase(phrase)
+    setChosenCountry(null)
+  }
+
+  const handleChosen = (country) => {
+    setChosenCountry(country)
   }
 
   const countriesToShow = !filterPhrase
@@ -48,9 +54,9 @@ return (
 
     <Filter phrase={filterPhrase} handleChange={handleFilterChange} />
     <br />
-    <CountriesList countriesToShow={countriesToShow} buttonLabel={"Info"}/>
+    <CountriesList countriesToShow={countriesToShow} buttonLabel={"show"} handleChosen={handleChosen}/>
     <br />
-    <CountryInfo countriesToShow={countriesToShow}>asd</CountryInfo>
+    <CountryInfo countriesToShow={countriesToShow} chosenCountry={chosenCountry} >asd</CountryInfo>
 
   </div>
 )

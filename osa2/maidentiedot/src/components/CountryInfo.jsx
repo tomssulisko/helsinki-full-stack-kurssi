@@ -1,41 +1,49 @@
-const CountryInfo = ({ countriesToShow }) => {
+const CountryInfo = ({ countriesToShow, chosenCountry }) => {
+  let countryObject = null
+  if (countriesToShow && countriesToShow.length === 1) {
+  countryObject = countriesToShow[0]
 
-if (countriesToShow && countriesToShow.length === 1) {
-  let languages = null;
-  const countryObject = countriesToShow[0]
+  } else if (chosenCountry) {
+    countryObject = chosenCountry
+  }
 
-  languages = Object.keys(countryObject.languages).map(key => 
-    <li value={key} key={key}>{countryObject.languages[key]}</li>
-)
+  if (countryObject) {
 
-  const flagUrl = countryObject.flags.png
+    let languages = null;
+  
 
-return (
-      <div>
+    languages = Object.keys(countryObject.languages).map(key => 
+      <li value={key} key={key}>{countryObject.languages[key]}</li>
+  )
+
+    const flagUrl = countryObject.flags.png
+
+  return (
+        <div>
 
 
-        <h2>
-          This is {countryObject.name.common}
-        </h2>
-        <img src={flagUrl}/>
-        
-        <br />
-        Capital: {countryObject.capital}
-        <br />
-        Population: {countryObject.population}
-        <br />
-        Area: {countryObject.area}
+          <h2>
+            This is {countryObject.name.common}
+          </h2>
+          <img src={flagUrl}/>
+          
+          <br />
+          Capital: {countryObject.capital}
+          <br />
+          Population: {countryObject.population}
+          <br />
+          Area: {countryObject.area}
 
-        <ul>
-          {languages}
-        </ul>
+          <ul>
+            {languages}
+          </ul>
 
-      </div>
-    )
-}
-else {
-  return null;
-}
+        </div>
+      )
+
+  } else {
+    return null;
+  }
     
   }
   
