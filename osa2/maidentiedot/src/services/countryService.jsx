@@ -1,29 +1,22 @@
 import axios from 'axios'
-const baseUrl = 'https://studies.cs.helsinki.fi/restcountries/api/all'
+const countryApiUrl = 'https://studies.cs.helsinki.fi/restcountries/api/all'
+const weatherApiUrl = 'https://api.openweathermap.org/data/2.5/weather'
+const apiKey = process.env.REACT_APP_WEATHER_KEY
 
-const getAll = () => {
-    const request = axios.get(baseUrl)
+const getAllCountries = () => {
+    const request = axios.get(countryApiUrl)
     return request.then(response => response.data)
   }
 
-const create = (newObject) => {
-  const request = axios.post(baseUrl, newObject)
-  return request.then(response => response.data)
-}
 
-const remove = (id) => {
-  const request = axios.delete(`${baseUrl}/${id}`)
-  return request.then(response => response.data)
-}
+//https://api.openweathermap.org/data/2.5/weather?id={city id}&appid={API key}
 
-const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject)
+const getWeather = (id)  => {
+  const request = axios.get(`${weatherApiUrl}?id=${id}&appid=${apiKey}`)
   return request.then(response => response.data)
 }
 
 export default {
-    getAll,
-    create,
-    update,
-    remove
+    getAllCountries,
+    getWeather
 };

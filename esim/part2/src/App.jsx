@@ -46,21 +46,6 @@ const App = () => {
       })
   }, [])
 
-  /* 
-  // Sama asia kuin:
-  useEffect(() => {
-  console.log('effect')
-
-  const eventHandler = response => {
-    console.log('promise fulfilled')
-    setNotes(response.data)
-  }
-
-  const promise = axios.get('http://localhost:3001/notes')
-  promise.then(eventHandler)
-}, [])
-  */
-
   console.log('render', notes.length, 'notes')
 
   const toggleImportanceOf = id => {
