@@ -70,14 +70,18 @@ const App = () => {
 
   const addNote = event => {
     event.preventDefault()
+    
     const noteObject = {
       content: newNote,
       important: Math.random() > 0.5,
     }
   
+
+  
     noteService
       .create(noteObject)
         .then(returnedNote => {
+        console.log("add note", returnedNote)  
         setNotes(notes.concat(returnedNote))
         setNewNote('')
       })
