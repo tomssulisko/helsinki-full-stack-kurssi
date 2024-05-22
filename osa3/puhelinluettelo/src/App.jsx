@@ -90,15 +90,16 @@ const App = () => {
     personService
     .remove(event)
     .then(response => {
-
-    let clonedPersons = persons.slice(0)
-        const personToRemove = clonedPersons.find((person) => person.id === response.id)
-        const index = clonedPersons.indexOf(personToRemove)
+      
+      let clonedPersons = persons.slice(0)
+      const personToRemove = clonedPersons.find((person) => person.id === response.id)
+      const removedPersonName = personToRemove.name
+      const index = clonedPersons.indexOf(personToRemove)
         if (index > -1) {
           clonedPersons.splice(index,1)
           setPersons(clonedPersons)
-    }
-    showNotification("Removed: "+personToRemove.name, "success")
+        }
+      showNotification("Removed: "+removedPersonName, "success")
 
     }).catch(error => {
       showNotification("Error while removing person: "+error, "error")
